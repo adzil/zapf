@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package zapf.marshaler;
+
+option go_package = "github.com/adzil/zapf/internal/gen/go/marshaler;marshalerpb";
+
+import "google/protobuf/any.proto";
+
+enum Choice {
+    CHOICE_UNSPECIFIED = 0;
+    CHOICE_ONE = 1;
+    CHOICE_TWO = 2;
+    CHOICE_THREE = 3;
+}
+
+message Marshaler {
+    map<string, string> map = 1;
+    repeated string array = 2;
+    bool bool = 3;
+    string string = 4;
+    bytes bytes = 5;
+    Choice enum = 6;
+    float float = 7;
+    double double = 8;
+    int32 int32 = 9;
+    int64 int64 = 10;
+    uint32 uint32 = 11;
+    uint64 uint64 = 12;
+    sint32 sint32 = 13;
+    sint64 sint64 = 14;
+    fixed32 fixed32 = 15;
+    fixed64 fixed64 = 16;
+    sfixed32 sfixed32 = 17;
+    sfixed64 sfixed64 = 18;
+    oneof payload {
+        google.protobuf.Any any = 19;
+        Message message = 20;
+    }
+}
+
+message Message {
+    string text = 1;
+}

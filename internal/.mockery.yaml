@@ -1,0 +1,9 @@
+with-expecter: false
+dir: mocks
+outpkg: mocks
+mockname: "{{.InterfaceName}}"
+packages:
+  go.uber.org/zap/zapcore:
+    interfaces:
+      ArrayEncoder:
+      ObjectEncoder:
