@@ -7,10 +7,14 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// Message constructs a field with a given key and Protobuf message. It will
+// serialize the Protobuf message lazily.
 func Message(key string, msg proto.Message) zap.Field {
 	return zap.Object(key, protolog.MarshalerOf(msg))
 }
 
+// TypedMessage constructs a field with a given key and Protobuf message. It
+// will serialize the Protobuf message with its type URL lazily.
 func TypedMessage(key string, msg proto.Message) zap.Field {
 	opts := protolog.Options{
 		Typed: true,
@@ -34,12 +38,16 @@ func (m protosMarshaler[M]) MarshalLogArray(enc zapcore.ArrayEncoder) error {
 	return nil
 }
 
+// Messages constructs a field with a given key and typed Protobuf messages. It
+// will serialize the Protobuf messages lazily.
 func Messages[M proto.Message](key string, msgs []M) zap.Field {
 	return zap.Array(key, protosMarshaler[M]{
 		Messages: msgs,
 	})
 }
 
+// TypedMessages constructs a field with a given key and typed Protobuf
+// messages. It will serialize the Protobuf messages with their type URL lazily.
 func TypedMessages[M proto.Message](key string, msgs []M) zap.Field {
 	return zap.Array(key, protosMarshaler[M]{
 		Marshaler: protolog.Options{
