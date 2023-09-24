@@ -1,9 +1,9 @@
 module github.com/adzil/zapf/zaptrace
 
-go 1.21.1
+go 1.20
 
 require (
-	github.com/adzil/zapf v0.1.0
+	github.com/adzil/zapf v0.1.1
 	github.com/stretchr/testify v1.8.4
 	go.opentelemetry.io/otel/trace v1.18.0
 	go.uber.org/zap v1.26.0
