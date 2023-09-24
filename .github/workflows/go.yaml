@@ -13,4 +13,4 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
       - name: Run Go tests
-        run: find . -name "go.mod" -execdir go test -cover -v ./... ";"
+        run: go list -f '{{.Dir}}/...' -m | xargs go test -cover
