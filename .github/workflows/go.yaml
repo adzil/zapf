@@ -1,5 +1,9 @@
 name: Go
-on: [push]
+
+on:
+  pull_request:
+  merge_group:
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -8,9 +12,29 @@ jobs:
         go-version: ["1.20", "1.21"]
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Go ${{ matrix.go-version }}
         uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go-version }}
+          cache-dependency-path: "**/*.sum"
+
+      - name: Run Golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | \
+            sh -s -- -b $(go env GOPATH)/bin v1.54.2
+          go list -f '{{.Dir}}/...' -m | xargs golangci-lint run
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+          cache-dependency-path: "**/*.sum"
+
       - name: Run Go tests
         run: go list -f '{{.Dir}}/...' -m | xargs go test -cover
